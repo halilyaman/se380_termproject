@@ -54,23 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: IncrementButton(incrementCounter: _incrementCounter,)
-    );
-  }
-}
-
-class IncrementButton extends StatelessWidget {
-
-  final Function incrementCounter;
-
-  IncrementButton({this.incrementCounter});
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: incrementCounter,
-      tooltip: 'Increment',
-      child: Icon(Icons.hdr_strong),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.hdr_strong),
+      )
     );
   }
 }
