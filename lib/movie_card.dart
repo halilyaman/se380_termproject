@@ -1,10 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:se380_termproject/assets.dart';
 
-class MovieCard {
-  static Widget buildMovieCard() {
+class MovieCard extends StatefulWidget {
+
+  MovieCard({
+    this.movieTitle,
+    this.movieImageAddress,
+    this.movieDetails,
+    this.movieRating,
+  });
+
+  factory MovieCard.fromJSON(Map<dynamic, dynamic> parsedJson) {
+    return MovieCard(
+      movieTitle: parsedJson['title'],
+      movieImageAddress: parsedJson['poster_path'],
+      movieDetails: parsedJson['overview'],
+      movieRating: parsedJson['vote_average'],
+    );
+  }
+
+  final String movieTitle, movieImageAddress, movieDetails;
+  final double movieRating;
+
+  _MovieCardState createState() {
+    return _MovieCardState();
+  }
+
+}
+
+class _MovieCardState extends State<MovieCard>{
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Card(
+        color: Colors.indigo[900],
+        borderOnForeground: true,
         child: ConstrainedBox(
           constraints: BoxConstraints.expand(height: 500),
           child: Center(
@@ -12,19 +43,16 @@ class MovieCard {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Expanded(
-                  flex: 2,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.expand(),
-                    child: Container(
-                      color: Colors.black54,
-                      child: Center(
-                        child: Text(
-                          'Movie Name',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontStyle: FontStyle.italic
-                          ),
+                  flex: 1,
+                  child: Container(
+                    color: Colors.black54,
+                    child: Center(
+                      child: Text(
+                        '${widget.movieTitle}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontStyle: FontStyle.italic
                         ),
                       ),
                     ),
@@ -39,8 +67,9 @@ class MovieCard {
                         child: ConstrainedBox(
                           constraints: BoxConstraints.expand(),
                           child: Container(
-                            color: Colors.black,
-                            child: Image.asset(ImageAssets.myImage),
+                            padding: EdgeInsets.all(5),
+                            color: Colors.white12,
+                            child: Image.network(widget.movieImageAddress),
                           ),
                         ),
                       ),
@@ -49,10 +78,11 @@ class MovieCard {
                         child: GestureDetector(
                           child: Center(
                             child: Container(
-                              color: Colors.black45,
+                              padding: EdgeInsets.all(10),
+                              color: Colors.black26,
                               child: Center(
                                 child: Text(
-                                  'Movie Info',
+                                  '${widget.movieDetails}',
                                   style: TextStyle(
                                     color: Colors.white
                                   ),
@@ -60,7 +90,7 @@ class MovieCard {
                               ),
                             ),
                           ),
-                          onTap: ()=>print('tapped!'), // TODO: navigate details page
+                          onTap: null, // TODO: navigate details page
                         ),
                       ),
                     ],
@@ -90,9 +120,11 @@ class MovieCard {
                             color: Colors.brown[100],
                             child: Center(
                               child: Text(
-                                '9.2/10', // TODO: add average score of movie
+                                '${widget.movieRating}', // TODO: add average score of movie
                                 style: TextStyle(
                                   color: Colors.black,
+                                  fontFamily: 'monospace',
+                                  fontWeight: FontWeight.bold
                                 ),
                               ),
                             ),
