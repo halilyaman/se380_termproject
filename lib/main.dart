@@ -11,7 +11,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Movies'),
+          title: Center(
+            child: Text('Movies "Top 200"'),
+          )
         ),
         body: Center(
           child: list.TopMovieList(),

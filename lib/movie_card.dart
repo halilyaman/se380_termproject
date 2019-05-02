@@ -25,7 +25,7 @@ class _MovieCardState extends State<MovieCard>{
         color: Colors.indigo[900],
         borderOnForeground: true,
         child: ConstrainedBox(
-          constraints: BoxConstraints.expand(height: 500),
+          constraints: BoxConstraints.expand(height: 450),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +57,7 @@ class _MovieCardState extends State<MovieCard>{
                           child: Container(
                             padding: EdgeInsets.all(5),
                             color: Colors.white12,
-                            child: Image.network('https://picsum.photos/250?image=9'),
+                            child: Image.network(ApiAssets.imageBaseUrl+widget._posterPath),
                           ),
                         ),
                       ),
