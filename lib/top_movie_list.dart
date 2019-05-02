@@ -1,77 +1,91 @@
 import 'package:flutter/material.dart';
-import 'movie_card.dart';
-import 'dart:convert';
-import 'assets.dart';
 import 'package:http/http.dart' as http;
+import 'package:se380_termproject/assets.dart';
+import 'dart:convert';
 
-class TopMovies extends StatefulWidget {
+import 'package:se380_termproject/movie_card.dart';
+
+class TopMovieList extends StatefulWidget{
 
   @override
-  _TopMoviesState createState() {
-    return _TopMoviesState();
-  }
+  _TopMovieListState createState() => _TopMovieListState();
 }
 
-class _TopMoviesState extends State<TopMovies> {
+class _TopMovieListState extends State<TopMovieList> {
+  Movie _movieData;
 
-  String url = 'https://api.themoviedb.org/3/movie/top_rated?api_key=${ApiAssets.apiKey}';
-  var isLoading = true;
-  Map<dynamic, dynamic> map = Map();
-  List<Widget> _movieCardList = List();
+  bool _isLoading = false;
+  bool _isMovieCardWillShow = false;
 
-  _fetchData() async {
+  Future<void> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+      _isMovieCardWillShow = true;
+    });
 
-    final response = await http.get(url);
+    var response = await http.get(ApiAssets.apiUrl+ApiAssets.topRatedMoviesUrl+'api_key='+ApiAssets.apiKey);
+
     if(response.statusCode == 200) {
+      _movieData = Movie.fromJson(json.decode(response.body), 0);
+      print(_movieData);
       setState(() {
-        isLoading = false;
-        map = json.decode(response.body) as Map;
+        _isLoading = false;
       });
-      print(map);
-    } else {
-      throw Exception('Failed to fetch data');
+
     }
-  }
-
-
-  @override
-  void initState() {
-    _fetchData();
-  }
-
-  @override
-  void didUpdateWidget(TopMovies oldWidget) {
-    _fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    for(int i = 0; i < 10; i++) {
-      _movieCardList.add(MovieCard(
-        movieDetails: map['results'][i]['overview'],
-        movieTitle: map['results'][i]['title'],
-        movieImageAddress: map['results'][i]['poster_path'],
-      ));
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text('Top Movies'),
-        ),
-      ),
-      body: isLoading
-        ?
-          Center(
-            child: CircularProgressIndicator(),
-          )
-        :
-          SingleChildScrollView(
-            child: Column(
-              children: _movieCardList
-            ),
+    return _isLoading
+      ? CircularProgressIndicator()
+      : _isMovieCardWillShow ?
+      MovieCard(
+        title: _movieData._title,
+        posterPath: _movieData._posterPath,
+        voteAverage: _movieData._voteAverage,
+        overview: _movieData._overview,
+      )
+      :
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          RaisedButton(
+            child: Text('fetch data'),
+            onPressed: _fetchData,
           ),
+          RaisedButton(
+            child: Text('print text'),
+            onPressed: ()=>print(_fetchData()),
+          )
+        ],
+      );
+
+  }
+}
+
+class Movie {
+  final String _title, _posterPath, _voteAverage, _overview;
+  Movie({String title, String posterPath, String voteAverage, String overview})
+    : this._title = title,
+      this._posterPath = posterPath,
+      this._voteAverage = voteAverage,
+      this._overview = overview;
+
+  factory Movie.fromJson(Map<String, dynamic> fetchedData, int index) {
+    return Movie(
+      title: fetchedData['results'][index]['title'],
+      posterPath: fetchedData['results'][index]['poster_path'],
+      voteAverage: fetchedData['results'][index]['vote_average'].toString(),
+      overview: fetchedData['results'][index]['overview'],
     );
+  }
+
+  @override
+  String toString() {
+    return 'Title: ' + this._title
+      + '\nPoster Path: ' + this._posterPath
+      + '\nAverage Vote: ' + this._voteAverage
+      + '\nOverview: ' + this._overview;
   }
 }

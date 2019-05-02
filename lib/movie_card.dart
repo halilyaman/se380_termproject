@@ -3,29 +3,17 @@ import 'package:se380_termproject/assets.dart';
 
 class MovieCard extends StatefulWidget {
 
-  MovieCard({
-    this.movieTitle,
-    this.movieImageAddress,
-    this.movieDetails,
-    this.movieRating,
-  });
+  final String _title, _posterPath, _voteAverage, _overview;
 
-  factory MovieCard.fromJSON(Map<dynamic, dynamic> parsedJson) {
-    return MovieCard(
-      movieTitle: parsedJson['title'],
-      movieImageAddress: parsedJson['poster_path'],
-      movieDetails: parsedJson['overview'],
-      movieRating: parsedJson['vote_average'],
-    );
-  }
-
-  final String movieTitle, movieImageAddress, movieDetails;
-  final double movieRating;
+  MovieCard({String title, String posterPath, String voteAverage, String overview})
+    : this._title = title,
+      this._posterPath = posterPath,
+      this._voteAverage = voteAverage,
+      this._overview = overview;
 
   _MovieCardState createState() {
     return _MovieCardState();
   }
-
 }
 
 class _MovieCardState extends State<MovieCard>{
@@ -48,7 +36,7 @@ class _MovieCardState extends State<MovieCard>{
                     color: Colors.black54,
                     child: Center(
                       child: Text(
-                        '${widget.movieTitle}',
+                        widget._title,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -69,7 +57,7 @@ class _MovieCardState extends State<MovieCard>{
                           child: Container(
                             padding: EdgeInsets.all(5),
                             color: Colors.white12,
-                            child: Image.network(widget.movieImageAddress),
+                            child: Image.network('https://picsum.photos/250?image=9'),
                           ),
                         ),
                       ),
@@ -82,7 +70,7 @@ class _MovieCardState extends State<MovieCard>{
                               color: Colors.black26,
                               child: Center(
                                 child: Text(
-                                  '${widget.movieDetails}',
+                                  widget._overview,
                                   style: TextStyle(
                                     color: Colors.white
                                   ),
@@ -120,7 +108,7 @@ class _MovieCardState extends State<MovieCard>{
                             color: Colors.brown[100],
                             child: Center(
                               child: Text(
-                                '${widget.movieRating}', // TODO: add average score of movie
+                                widget._voteAverage, // TODO: add average score of movie
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'monospace',
