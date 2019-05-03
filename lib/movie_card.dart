@@ -68,17 +68,19 @@ class _MovieCardState extends State<MovieCard>{
                             child: Container(
                               padding: EdgeInsets.all(10),
                               color: Colors.black26,
-                              child: Center(
-                                child: Text(
-                                  widget._overview,
-                                  style: TextStyle(
-                                    color: Colors.white
+                              child: ListView(
+                                children: <Widget>[
+                                  Text(
+                                    widget._overview,
+                                    style: TextStyle(
+                                      color: Colors.white
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             ),
                           ),
-                          onTap: null, // TODO: navigate details page
+                          onTap: ()=>print('test1'), // TODO: navigate movie details page
                         ),
                       ),
                     ],

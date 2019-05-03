@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:se380_termproject/assets.dart';
 import 'dart:convert';
-import 'package:flare_flutter/flare_actor.dart';
 
 import 'package:se380_termproject/movie_card.dart';
 
@@ -32,8 +31,6 @@ class _TopMovieListState extends State<TopMovieList> {
       var response = await http.get(ApiAssets.apiUrl+ApiAssets.topRatedMoviesUrl+'api_key='+ApiAssets.apiKey+'&page=$i');
 
       if(response.statusCode == 200) {
-
-        sleep(Duration(seconds: 3));
 
         _fetchedData = json.decode(response.body);
         for(int i = 0 ; i < 20; i++) {
@@ -88,10 +85,6 @@ class _TopMovieListState extends State<TopMovieList> {
           RaisedButton(
             child: Text('fetch data'),
             onPressed: _fetchData,
-          ),
-          RaisedButton(
-            child: Text('print text'),
-            onPressed: ()=>print(_fetchData()),
           )
         ],
       );
