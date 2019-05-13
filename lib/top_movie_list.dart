@@ -37,68 +37,77 @@ class _TopMovieListState extends State<TopMovieList> {
           _movieData = Movie.fromJson(_fetchedData, i);
           _movieDataList.add(_movieData);
         }
-
-        print(_movieDataList.length);
-
       }
     }
 
     setState(() {
       _isLoading = false;
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-      ? CircularProgressIndicator()
-      : _isMovieCardWillShow ?
-      Center(
-        child: Column(
-          children: <Widget>[
-            RaisedButton(
-              child: Text('Back'),
-              onPressed: (){
-                setState(() {
-                  _isMovieCardWillShow = false;
-                });
-              },
-            ),
-            Expanded(
-              child: ListView(
-                children: _movieDataList.map((movie) => MovieCard(
-                  title: movie._title,
-                  posterPath: movie._posterPath,
-                  voteAverage: movie._voteAverage,
-                  overview: movie._overview,
-                )).toList(),
-              ),
-            )
-          ],
-        )
-      )
-      :
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          RaisedButton(
-            child: Text('fetch data'),
-            onPressed: _fetchData,
+    return Scaffold(
+        appBar: AppBar(
+          title: Center(
+            child: Text('Movies "Top 200"'),
           )
-        ],
-      );
-
+        ),
+        body: _isLoading ?
+          Center(
+            child: CircularProgressIndicator(),
+          )
+          : _isMovieCardWillShow ?
+          Center(
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text('Back'),
+                    onPressed: (){
+                      setState(() {
+                        _isMovieCardWillShow = false;
+                      });
+                    },
+                  ),
+                  Expanded(
+                    child: ListView(
+                      children: _movieDataList.map((movie) => MovieCard(
+                        title: movie._title,
+                        posterPath: movie._posterPath,
+                        voteAverage: movie._voteAverage,
+                        overview: movie._overview,
+                      )).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+          : Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  child: Text('fetch data'),
+                  onPressed: _fetchData,
+                )
+              ],
+            ),
+          )
+    );
   }
 }
 
 class Movie {
   final String _title, _posterPath, _voteAverage, _overview;
-  Movie({String title, String posterPath, String voteAverage, String overview})
+  final int _ID;
+  Movie({String title, String posterPath, String voteAverage, String overview, int id})
     : this._title = title,
       this._posterPath = posterPath,
       this._voteAverage = voteAverage,
-      this._overview = overview;
+      this._overview = overview,
+      this._ID= id;
 
   factory Movie.fromJson(Map<String, dynamic> fetchedData, int index) {
     return Movie(
@@ -106,6 +115,7 @@ class Movie {
       posterPath: fetchedData['results'][index]['poster_path'],
       voteAverage: fetchedData['results'][index]['vote_average'].toString(),
       overview: fetchedData['results'][index]['overview'],
+      id: fetchedData['results'][index]['id'],
     );
   }
 
@@ -114,6 +124,7 @@ class Movie {
     return 'Title: ' + this._title
       + '\nPoster Path: ' + this._posterPath
       + '\nAverage Vote: ' + this._voteAverage
-      + '\nOverview: ' + this._overview;
+      + '\nOverview: ' + this._overview
+      + '\nID: ' + this._ID.toString();
   }
 }

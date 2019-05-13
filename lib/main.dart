@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:se380_termproject/movie_card.dart';
-import 'package:se380_termproject/top_movie_list.dart' as list;
+import 'package:se380_termproject/top_movie_list.dart' as topMovies;
+import 'movie_details.dart' as movieDetails;
+import 'test.dart' as test;
 
 void main() => runApp(MyApp());
 
@@ -9,16 +10,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Center(
-            child: Text('Movies "Top 200"'),
-          )
-        ),
-        body: Center(
-          child: list.TopMovieList(),
-        ),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => test.FirstRoute(),
+        '/top_movie_list': (context) => topMovies.TopMovieList(),
+        '/movie_details': (context) => movieDetails.MovieDetails()
+      },
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.blueGrey[900],

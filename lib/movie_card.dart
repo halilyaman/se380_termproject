@@ -18,6 +18,10 @@ class MovieCard extends StatefulWidget {
 
 class _MovieCardState extends State<MovieCard>{
 
+  onPressed() {
+      Navigator.pushNamed(context, '/');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -80,7 +84,7 @@ class _MovieCardState extends State<MovieCard>{
                               ),
                             ),
                           ),
-                          onTap: ()=>print('test1'), // TODO: navigate movie details page
+                          onTap: onPressed,
                         ),
                       ),
                     ],
